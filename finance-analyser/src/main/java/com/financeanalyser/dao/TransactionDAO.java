@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 import com.financeanalyser.model.Transaction;
 import com.financeanalyser.util.Database;
@@ -19,14 +20,14 @@ public class TransactionDAO {
         connection = Database.connect();
     }
 
-	public int insertTransaction(String date, String description, String category, float amount, String type) throws SQLException {
+	public int insertTransaction(LocalDate date, String description, String category, float amount, Transaction.Type type) throws SQLException {
 		String statement = "INSERT INTO Transactions (date, description, category, amount, type) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement ps = connection.prepareStatement(statement);
-		ps.setString(1, date);
+		ps.setString(1, date.toString());
 		ps.setString(2, description);
 		ps.setString(3, category);
 		ps.setFloat(4, amount);
-		ps.setString(5, type);
+		ps.setString(5, type.name());
 		ps.executeUpdate();
 		
 		ResultSet rs = ps.getGeneratedKeys();
@@ -51,11 +52,11 @@ public class TransactionDAO {
 		while(rs.next()) {
 			transactions.add(new Transaction(
 					rs.getInt("id"),
-					rs.getString("date"),
+					LocalDate.parse(rs.getString("date")),
 					rs.getString("description"),
 					rs.getString("category"),
 					rs.getFloat("amount"),
-					rs.getString("type")));
+					Transaction.Type.valueOf(rs.getString("type"))));
 		}
 		return transactions;
 	}

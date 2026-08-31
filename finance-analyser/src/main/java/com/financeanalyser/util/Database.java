@@ -6,10 +6,9 @@ import java.sql.SQLException;
 
 public class Database {
 
-    
+    public static final String URL = "jdbc:sqlite:src/main/resources/DBtable/finance.db";
     
 	public static Connection connect() throws SQLException {
-		final String URL = "jdbc:sqlite:" + "src/main/resources/finance.db";
         return DriverManager.getConnection(URL);
         
     }

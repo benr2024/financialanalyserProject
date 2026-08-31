@@ -1,18 +1,32 @@
 package com.financeanalyser.model;
+import java.time.LocalDate;
 
 public class Transaction {
 	
 	private int id;
-	private String date;
+	private LocalDate date;
 	private String description;
 	private String category;
 	private float amount;
-	private String type;
+	private Type type;
+	public static enum Type {
+		INCOME, EXPENSE
+	}
+
 	
 	
-	public Transaction(int id, String date, String description, String category, float amount, String type) {
+	public Transaction(int id, LocalDate date, String description, String category, float amount, Type type) {
 		super();
 		this.id = id;
+		this.date = date;
+		this.description = description;
+		this.category = category;
+		this.amount = amount;
+		this.type = type;
+	}
+
+	public Transaction(LocalDate date, String description, String category, float amount, Type type) {
+		super();
 		this.date = date;
 		this.description = description;
 		this.category = category;
@@ -26,7 +40,7 @@ public class Transaction {
 	}
 
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
@@ -46,7 +60,7 @@ public class Transaction {
 	}
 
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
