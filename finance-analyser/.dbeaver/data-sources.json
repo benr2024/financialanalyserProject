@@ -1,14 +1,14 @@
 {
 	"folders": {},
 	"connections": {
-		"sqlite_jdbc-1a04fe81b8e-756d1d9138c471a2": {
+		"sqlite_jdbc-1a0674c6e0e-3769bbfe69279f1": {
 			"provider": "sqlite",
 			"driver": "sqlite_jdbc",
 			"name": "finance.db",
 			"save-password": true,
 			"configuration": {
-				"database": "D:\\Ben\\gitpro\\finance-analyser\\src\\main\\resources\\finance.db",
-				"url": "jdbc:sqlite:D:\\Ben\\gitpro\\finance-analyser\\src\\main\\resources\\finance.db",
+				"database": "C:\\Users\\benja\\git\\financialanalyserProject\\finance-analyser\\src\\main\\resources\\DBtable\\finance.db",
+				"url": "jdbc:sqlite:C:\\Users\\benja\\git\\financialanalyserProject\\finance-analyser\\src\\main\\resources\\DBtable\\finance.db",
 				"configurationType": "MANUAL",
 				"type": "dev"
 			}

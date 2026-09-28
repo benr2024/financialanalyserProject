@@ -20,14 +20,17 @@ public class TransactionDAO {
         connection = Database.connect();
     }
 
-	public int insertTransaction(LocalDate date, String description, String category, float amount, Transaction.Type type) throws SQLException {
-		String statement = "INSERT INTO Transactions (date, description, category, amount, type) VALUES (?, ?, ?, ?, ?)";
+	public int insertTransaction(String date, String transactionType, String description, double paidOut, double paidIn, double balance) throws SQLException {
+		String statement = "INSERT INTO Transactions (date, properDate transactionType, description, paidOut, paidIn, balance) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = connection.prepareStatement(statement);
-		ps.setString(1, date.toString());
-		ps.setString(2, description);
-		ps.setString(3, category);
-		ps.setFloat(4, amount);
-		ps.setString(5, type.name());
+		LocalDate properDate = new Transaction().convertDateFormat(date);
+		ps.setString(1, date);
+		ps.setDate(2, properDate);
+		ps.setString(2, transactionType);
+		ps.setString(3, description);
+		ps.setDouble(4, paidOut);
+		ps.setDouble(5, paidIn);
+		ps.setDouble(6, balance);
 		ps.executeUpdate();
 		
 		ResultSet rs = ps.getGeneratedKeys();
@@ -35,7 +38,7 @@ public class TransactionDAO {
 		if(rs.next()) {
 			return rs.getInt(1);
 		}
-		throw new SQLException("Failed to create Player: no generated ID returned.");
+		throw new SQLException("Failed to create Transaction: no generated ID returned.");
 		
 	}
 	
@@ -50,13 +53,17 @@ public class TransactionDAO {
 		ResultSet rs = ps.executeQuery();
 		
 		while(rs.next()) {
-			transactions.add(new Transaction(
+			//create a new Transaction object from the result set
+			Transaction transaction = new Transaction(
 					rs.getInt("id"),
-					LocalDate.parse(rs.getString("date")),
+					rs.getString("date"),
+					rs.getString("transactionType"),
 					rs.getString("description"),
-					rs.getString("category"),
-					rs.getFloat("amount"),
-					Transaction.Type.valueOf(rs.getString("type"))));
+					rs.getDouble("paidOut"),
+					rs.getDouble("paidIn"),
+					rs.getDouble("balance")
+			);
+			transactions.add(transaction);
 		}
 		return transactions;
 	}
@@ -71,4 +78,85 @@ public class TransactionDAO {
 		
 	}
 
+	public double getTotalPaidOut() throws SQLException {
+		String statment = "SELECT SUM(paidOut) FROM Transactions";
+		PreparedStatement ps = connection.prepareStatement(statment);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return rs.getDouble(1);
+		}
+		return 0.0;
+	}
+
+	public double getTotalPaidIn() throws SQLException {
+		String statment = "SELECT SUM(paidIn) FROM Transactions";
+		PreparedStatement ps = connection.prepareStatement(statment);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return rs.getDouble(1);
+		}
+		return 0.0;
+	}
+
+	public double getBalance() throws SQLException {
+		String statment = "SELECT balance FROM Transactions ORDER BY id DESC LIMIT 1";
+		PreparedStatement ps = connection.prepareStatement(statment);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return rs.getDouble(1);
+		}
+		return 0.0;
+	}
+
+	public List<Transaction> getTransactionsByDateRange(LocalDate startDate, LocalDate endDate, String sortby, boolean ascending) throws SQLException {
+		List<Transaction> transactions = new ArrayList<>();
+		if (sortby == "Date") {
+			sortby = "properDate";
+		}
+		String statement = "SELECT * FROM Transactions WHERE properDate BETWEEN ? AND ? ORDER BY " + sortby + " " + (ascending ? "ASC" : "DESC");
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setString(1, startDate.toString());
+		ps.setString(2, endDate.toString());
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			Transaction transaction = new Transaction(
+					rs.getInt("id"),
+					rs.getString("date"),
+					rs.getproperDate("")
+					rs.getString("transactionType"),
+					rs.getString("description"),
+					rs.getDouble("paidOut"),
+					rs.getDouble("paidIn"),
+					rs.getDouble("balance")
+			);
+			transactions.add(transaction);
+		}
+		return transactions;
+	}
+
+	public List<Transaction> getTransactionsByDescription(String description, String sortby, boolean ascending) throws SQLException {
+		List<Transaction> transactions = new ArrayList<>();
+		if (sortby == "Date") {
+			sortby = "properDate";
+		}
+		String statement = "SELECT * FROM Transactions WHERE description LIKE ? ORDER BY " + sortby + " " + (ascending ? "ASC" : "DESC");
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setString(1, "%" + description + "%");
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			Transaction transaction = new Transaction(
+					rs.getInt("id"),
+					rs.getString("date"),
+					rs.getString("transactionType"),
+					rs.getString("description"),
+					rs.getDouble("paidOut"),
+					rs.getDouble("paidIn"),
+					rs.getDouble("balance")
+			);
+			transactions.add(transaction);
+		}
+		return transactions;
+	}
 }
