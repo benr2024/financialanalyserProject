@@ -1,0 +1,8 @@
+/target/
+*.db
+venv/
+analysis/venv/
+.classpath
+.project
+.settings/
+.dbeaver/ 
