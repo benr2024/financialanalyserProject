@@ -39,6 +39,7 @@ Transactions are grouped into the following categories:
 ## Project structure
 
 ```text
+README.md
 finance-analyser/
 ├── analysis/
 │   └── analysis.py
@@ -53,8 +54,7 @@ finance-analyser/
 │   │   └── resources/
 │   │       └── DBtable/
 ├── pom.xml
-├── .gitignore
-└── README.md
+└── .gitignore
 ```
 
 ## Prerequisites
