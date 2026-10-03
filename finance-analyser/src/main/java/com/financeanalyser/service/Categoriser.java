@@ -35,7 +35,7 @@ public class Categoriser {
             ),
             
             Category.HEALTH, List.of("boots", "superdrug", "lloydspharmacy", "holland & barrett", "well pharmacy", "rowlands pharmacy", "superdrug opticians", "boots opticians", "specsavers", "vision express", "bupa", "nuffield health", "spires healthcare", "circle health group", "benenden health", "vitality", "aviva health", "axa health", "hca healthcare", "bmi healthcare",
-                    "surrey sports park", "salute gym", "gym"
+                    "surrey sports park", "gym"
             ),
             
             Category.SUBSCRIPTIONS, List.of("netflix", "spotify", "disney+", "amazon prime", "apple music", "apple tv+", "youtube premium", "youtube music", "paramount+", "now", "sky", "audible", "kindle unlimited", "xbox game pass", "playstation plus", "nintendo switch online", "adobe creative cloud", "microsoft 365", "google one", "dropbox")

@@ -1,5 +1,5 @@
 /target/
-*.db
+
 venv/
 analysis/venv/
 .classpath
