@@ -34,7 +34,7 @@ Transactions are grouped into the following categories:
 - Maven
 - SQLite
 - Apache Commons CSV
-- Python analysis script (optional) using pandas, matplotlib, and scikit-learn
+- Python analysis script using pandas, matplotlib, and scikit-learn
 
 ## Project structure
 
